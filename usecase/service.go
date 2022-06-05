@@ -9,4 +9,5 @@ import (
 type Service interface {
 	ChargeWallet(ctx context.Context, id string, balance int) (res dto.ChargeWalletResponse, err error)
 	GetDiscountsByID(ctx context.Context, id string) (res dto.GetDiscountsByIDResponse, err error)
+	GetDiscounts(ctx context.Context) (res dto.GetDiscountsResponse, err error)
 }

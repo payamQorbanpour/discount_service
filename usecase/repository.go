@@ -34,3 +34,7 @@ func (repo *repo) InsertDiscount(ctx context.Context, id string, amount int) err
 func (repo *repo) GetDiscountsByID(ctx context.Context, id string) ([]dto.Discount, error) {
 	return repo.db[id], nil
 }
+
+func (repo *repo) GetDiscounts(ctx context.Context) (map[string][]dto.Discount, error) {
+	return repo.db, nil
+}

@@ -16,4 +16,8 @@ type (
 	GetDiscountsByIDResponse struct {
 		Discounts []Discount `json:"discounts"`
 	}
+
+	GetDiscountsResponse struct {
+		Discounts map[string][]Discount `json:"discounts"`
+	}
 )

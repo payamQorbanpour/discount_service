@@ -11,12 +11,14 @@ import (
 type Endpoints struct {
 	ChargeWallet     endpoint.Endpoint
 	GetDiscountsByID endpoint.Endpoint
+	GetDiscounts     endpoint.Endpoint
 }
 
 func MakeEndpoints(s Service) Endpoints {
 	return Endpoints{
 		ChargeWallet:     makeChargeWalletEndpoint(s),
-		GetDiscountsByID: makeGetDiscountList(s),
+		GetDiscountsByID: makeGetDiscountsByID(s),
+		GetDiscounts:     makeGetDiscounts(s),
 	}
 }
 
@@ -28,10 +30,18 @@ func makeChargeWalletEndpoint(s Service) endpoint.Endpoint {
 	}
 }
 
-func makeGetDiscountList(s Service) endpoint.Endpoint {
+func makeGetDiscountsByID(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(dto.GetDiscountsByIDRequest)
 		res, err := s.GetDiscountsByID(ctx, req.ID)
 		return dto.GetDiscountsByIDResponse{Discounts: res.Discounts}, err
+	}
+}
+
+func makeGetDiscounts(s Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		_ = request.(dto.GetDiscountsRequest)
+		res, err := s.GetDiscounts(ctx)
+		return dto.GetDiscountsResponse{Discounts: res.Discounts}, err
 	}
 }

@@ -16,6 +16,7 @@ type Wallet struct {
 type Repository interface {
 	InsertDiscount(ctx context.Context, id string, amount int) error
 	GetDiscountsByID(ctx context.Context, id string) ([]dto.Discount, error)
+	GetDiscounts(ctx context.Context) (map[string][]dto.Discount, error)
 }
 
 type WebAPI interface {

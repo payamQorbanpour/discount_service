@@ -42,6 +42,7 @@ func (s service) ChargeWallet(ctx context.Context, id string, amount int) (res d
 
 	return res, nil
 }
+
 func (s service) GetDiscountsByID(ctx context.Context, id string) (res dto.GetDiscountsByIDResponse, err error) {
 	logger := log.With(s.logger, "method", "GetDiscountsByID")
 	dis, err := s.repository.GetDiscountsByID(ctx, id)
@@ -51,6 +52,19 @@ func (s service) GetDiscountsByID(ctx context.Context, id string) (res dto.GetDi
 	}
 
 	return dto.GetDiscountsByIDResponse{
+		Discounts: dis,
+	}, nil
+}
+
+func (s service) GetDiscounts(ctx context.Context) (res dto.GetDiscountsResponse, err error) {
+	logger := log.With(s.logger, "method", "GetDiscounts")
+	dis, err := s.repository.GetDiscounts(ctx)
+	if err != nil {
+		logger.Log("err", err)
+		return res, err
+	}
+
+	return dto.GetDiscountsResponse{
 		Discounts: dis,
 	}, nil
 }

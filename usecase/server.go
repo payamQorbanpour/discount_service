@@ -24,6 +24,12 @@ func NewHTTPServer(ctx context.Context, endpoints Endpoints) http.Handler {
 		encodeResponse,
 	))
 
+	r.Methods("GET").Path("/").Handler(httptransport.NewServer(
+		endpoints.GetDiscounts,
+		decodeGetDiscountsRequest,
+		encodeResponse,
+	))
+
 	return r
 }
 

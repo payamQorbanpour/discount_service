@@ -34,3 +34,9 @@ func decodeGetDiscountsByIDRequest(ctx context.Context, r *http.Request) (interf
 
 	return req, nil
 }
+
+func decodeGetDiscountsRequest(ctx context.Context, r *http.Request) (interface{}, error) {
+	var req dto.GetDiscountsRequest
+
+	return req, nil
+}

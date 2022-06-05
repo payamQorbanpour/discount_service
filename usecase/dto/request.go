@@ -5,10 +5,11 @@ type (
 		ID     string `json:"id"`
 		Amount int    `json:"amount"`
 	}
-)
 
-type (
 	GetDiscountsByIDRequest struct {
 		ID string `json:"id"`
+	}
+
+	GetDiscountsRequest struct {
 	}
 )
