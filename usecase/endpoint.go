@@ -21,7 +21,7 @@ func MakeEndpoints(s Service) Endpoints {
 func makeChargeWalletEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(dto.ChargeWalletRequest)
-		totalBalance, err := s.ChargeWallet(ctx, req.ID, req.Amount)
-		return dto.ChargeWalletRequest{ID: req.ID, Amount: totalBalance}, err
+		res, err := s.ChargeWallet(ctx, req.ID, req.Amount)
+		return dto.ChargeWalletResponse{ID: res.ID, Balance: res.Balance}, err
 	}
 }

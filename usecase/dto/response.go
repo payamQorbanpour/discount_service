@@ -2,6 +2,7 @@ package dto
 
 type (
 	ChargeWalletResponse struct {
-		Balance int `json:"balance"`
+		ID      string `json:"id"`
+		Balance int    `json:"balance"`
 	}
 )

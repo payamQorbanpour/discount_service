@@ -3,6 +3,8 @@ package usecase
 import (
 	"context"
 
+	"discount_service/usecase/dto"
+
 	"github.com/go-kit/kit/log"
 )
 
@@ -18,7 +20,7 @@ func NewService(webAPI WebAPI, logger log.Logger) Service {
 	}
 }
 
-func (s service) ChargeWallet(ctx context.Context, id string, amount int) (totalBalance int, err error) {
+func (s service) ChargeWallet(ctx context.Context, id string, amount int) (res dto.ChargeWalletResponse, err error) {
 	logger := log.With(s.logger, "method", "ChargeWallet")
 
 	wallet := Wallet{
@@ -26,13 +28,13 @@ func (s service) ChargeWallet(ctx context.Context, id string, amount int) (total
 		Amount: amount,
 	}
 
-	totalBalance, err = s.webAPI.WalletChargeRequest(ctx, wallet)
+	res, err = s.webAPI.WalletChargeRequest(ctx, wallet)
 	if err != nil {
 		logger.Log("err", err)
-		return -1, err
+		return res, err
 	}
 
-	logger.Log("Charge wallet", totalBalance)
+	logger.Log("Charge wallet", res.Balance)
 
-	return totalBalance, nil
+	return res, nil
 }

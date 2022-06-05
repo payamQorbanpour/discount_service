@@ -3,6 +3,8 @@ package usecase
 import (
 	"context"
 	"time"
+
+	"discount_service/usecase/dto"
 )
 
 type Wallet struct {
@@ -16,5 +18,5 @@ type Repository interface {
 }
 
 type WebAPI interface {
-	WalletChargeRequest(ctx context.Context, wallet Wallet) (balance int, err error)
+	WalletChargeRequest(ctx context.Context, wallet Wallet) (res dto.ChargeWalletResponse, err error)
 }
