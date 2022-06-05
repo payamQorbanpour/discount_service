@@ -36,8 +36,9 @@ func main() {
 
 	var srv usecase.Service
 	{
+		repository := usecase.NewRepo(logger)
 		webAPI := webapi.NewWebAPI(logger)
-		srv = usecase.NewService(webAPI, logger)
+		srv = usecase.NewService(repository, webAPI, logger)
 	}
 
 	errs := make(chan error)

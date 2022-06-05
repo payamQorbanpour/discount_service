@@ -6,6 +6,8 @@ import (
 	"net/http"
 
 	"discount_service/usecase/dto"
+
+	"github.com/gorilla/mux"
 )
 
 func encodeResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
@@ -17,6 +19,17 @@ func decodeChargeRequest(ctx context.Context, r *http.Request) (interface{}, err
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		return nil, err
+	}
+
+	return req, nil
+}
+
+func decodeGetDiscountsByIDRequest(ctx context.Context, r *http.Request) (interface{}, error) {
+	var req dto.GetDiscountsByIDRequest
+	vars := mux.Vars(r)
+
+	req = dto.GetDiscountsByIDRequest{
+		ID: vars["id"],
 	}
 
 	return req, nil

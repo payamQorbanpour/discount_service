@@ -9,14 +9,16 @@ import (
 )
 
 type service struct {
-	webAPI WebAPI
-	logger log.Logger
+	repository Repository
+	webAPI     WebAPI
+	logger     log.Logger
 }
 
-func NewService(webAPI WebAPI, logger log.Logger) Service {
+func NewService(repo Repository, webAPI WebAPI, logger log.Logger) Service {
 	return &service{
-		webAPI: webAPI,
-		logger: logger,
+		repository: repo,
+		webAPI:     webAPI,
+		logger:     logger,
 	}
 }
 
@@ -34,7 +36,21 @@ func (s service) ChargeWallet(ctx context.Context, id string, amount int) (res d
 		return res, err
 	}
 
+	s.repository.InsertDiscount(ctx, wallet.ID, wallet.Amount)
+
 	logger.Log("Charge wallet", res.Balance)
 
 	return res, nil
+}
+func (s service) GetDiscountsByID(ctx context.Context, id string) (res dto.GetDiscountsByIDResponse, err error) {
+	logger := log.With(s.logger, "method", "GetDiscountsByID")
+	dis, err := s.repository.GetDiscountsByID(ctx, id)
+	if err != nil {
+		logger.Log("err", err)
+		return res, err
+	}
+
+	return dto.GetDiscountsByIDResponse{
+		Discounts: dis,
+	}, nil
 }
