@@ -43,6 +43,10 @@ func (repo *repo) UpdateDiscount(ctx context.Context, code, walletID string) (*d
 		return nil, errors.New("discount code not found")
 	}
 
+	if repo.discountValidation(ctx, code) {
+		return nil, errors.New("discount used")
+	}
+
 	discountData := repo.db[code]
 	discountData.WalletID = walletID
 	discountData.UpdatedAt = time.Now().Format(time.RFC3339)
@@ -71,4 +75,8 @@ func (repo *repo) checkDiscountExistance(ctx context.Context, code string) bool 
 	}
 
 	return false
+}
+
+func (repo *repo) discountValidation(ctx context.Context, code string) bool {
+	return repo.db[code].WalletID != ""
 }
