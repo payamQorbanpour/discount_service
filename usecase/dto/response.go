@@ -1,23 +1,24 @@
 package dto
 
-import "time"
-
 type (
 	ChargeWalletResponse struct {
 		ID      string `json:"id"`
 		Balance int    `json:"balance"`
 	}
 
-	Discount struct {
-		Amount    int
-		CreatedAt time.Time
+	DiscountData struct {
+		Code      string `json:"code"`
+		WalletID  string `json:"wallet_id"`
+		Amount    int    `json:"amount"`
+		CreatedAt string
+		UpdatedAt string
 	}
 
 	GetDiscountsByIDResponse struct {
-		Discounts []Discount `json:"discounts"`
+		Discounts []DiscountData `json:"discounts"`
 	}
 
 	GetDiscountsResponse struct {
-		Discounts map[string][]Discount `json:"discounts"`
+		Discounts map[string]DiscountData `json:"discounts"`
 	}
 )

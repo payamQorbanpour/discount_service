@@ -9,23 +9,33 @@ import (
 )
 
 type Endpoints struct {
-	ChargeWallet     endpoint.Endpoint
-	GetDiscountsByID endpoint.Endpoint
-	GetDiscounts     endpoint.Endpoint
+	InitiateDiscounts endpoint.Endpoint
+	ChargeWallet      endpoint.Endpoint
+	GetDiscountsByID  endpoint.Endpoint
+	GetDiscounts      endpoint.Endpoint
 }
 
 func MakeEndpoints(s Service) Endpoints {
 	return Endpoints{
-		ChargeWallet:     makeChargeWalletEndpoint(s),
-		GetDiscountsByID: makeGetDiscountsByID(s),
-		GetDiscounts:     makeGetDiscounts(s),
+		InitiateDiscounts: makeInitiateDiscountsEndpoint(s),
+		ChargeWallet:      makeChargeWalletEndpoint(s),
+		GetDiscountsByID:  makeGetDiscountsByID(s),
+		GetDiscounts:      makeGetDiscounts(s),
+	}
+}
+
+func makeInitiateDiscountsEndpoint(s Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		req := request.(dto.DiscountsInitiateRequest)
+		err = s.InitiateDiscounts(ctx, req.Count, req.Amount)
+		return dto.ChargeWalletResponse{}, err
 	}
 }
 
 func makeChargeWalletEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		req := request.(dto.ChargeWalletRequest)
-		res, err := s.ChargeWallet(ctx, req.ID, req.Amount)
+		req := request.(dto.DiscountRequest)
+		res, err := s.ChargeWallet(ctx, req.Code, req.WalletID)
 		return dto.ChargeWalletResponse{ID: res.ID, Balance: res.Balance}, err
 	}
 }

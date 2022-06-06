@@ -18,6 +18,12 @@ func NewHTTPServer(ctx context.Context, endpoints Endpoints) http.Handler {
 		encodeResponse,
 	))
 
+	r.Methods("POST").Path("/initiate").Handler(httptransport.NewServer(
+		endpoints.InitiateDiscounts,
+		decodeInitiateDiscounts,
+		encodeResponse,
+	))
+
 	r.Methods("GET").Path("/{id}").Handler(httptransport.NewServer(
 		endpoints.GetDiscountsByID,
 		decodeGetDiscountsByIDRequest,

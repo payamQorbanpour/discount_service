@@ -22,12 +22,30 @@ func NewService(repo Repository, webAPI WebAPI, logger log.Logger) Service {
 	}
 }
 
-func (s service) ChargeWallet(ctx context.Context, id string, amount int) (res dto.ChargeWalletResponse, err error) {
+func (s service) InitiateDiscounts(ctx context.Context, count, amount int) error {
+	logger := log.With(s.logger, "method", "InitiateDiscounts")
+
+	err := s.repository.InitiateDiscounts(ctx, count, amount)
+	if err != nil {
+		logger.Log("err", err)
+		return err
+	}
+
+	return nil
+}
+
+func (s service) ChargeWallet(ctx context.Context, code, walletID string) (res dto.ChargeWalletResponse, err error) {
 	logger := log.With(s.logger, "method", "ChargeWallet")
 
+	discountData, err := s.repository.UpdateDiscount(ctx, code, walletID)
+	if err != nil {
+		logger.Log("err", err)
+		return res, err
+	}
+
 	wallet := Wallet{
-		ID:     id,
-		Amount: amount,
+		ID:     walletID,
+		Amount: discountData.Amount,
 	}
 
 	res, err = s.webAPI.WalletChargeRequest(ctx, wallet)
@@ -35,8 +53,6 @@ func (s service) ChargeWallet(ctx context.Context, id string, amount int) (res d
 		logger.Log("err", err)
 		return res, err
 	}
-
-	s.repository.InsertDiscount(ctx, wallet.ID, wallet.Amount)
 
 	logger.Log("Charge wallet", res.Balance)
 

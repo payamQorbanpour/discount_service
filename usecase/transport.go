@@ -14,8 +14,18 @@ func encodeResponse(ctx context.Context, w http.ResponseWriter, response interfa
 	return json.NewEncoder(w).Encode(response)
 }
 
+func decodeInitiateDiscounts(ctx context.Context, r *http.Request) (interface{}, error) {
+	var req dto.DiscountsInitiateRequest
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 func decodeChargeRequest(ctx context.Context, r *http.Request) (interface{}, error) {
-	var req dto.ChargeWalletRequest
+	var req dto.DiscountRequest
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		return nil, err

@@ -14,9 +14,10 @@ type Wallet struct {
 }
 
 type Repository interface {
-	InsertDiscount(ctx context.Context, id string, amount int) error
-	GetDiscountsByID(ctx context.Context, id string) ([]dto.Discount, error)
-	GetDiscounts(ctx context.Context) (map[string][]dto.Discount, error)
+	InitiateDiscounts(ctx context.Context, count, amount int) error
+	UpdateDiscount(ctx context.Context, code, walletID string) (*dto.DiscountData, error)
+	GetDiscountsByID(ctx context.Context, walletID string) ([]dto.DiscountData, error)
+	GetDiscounts(ctx context.Context) (map[string]dto.DiscountData, error)
 }
 
 type WebAPI interface {
