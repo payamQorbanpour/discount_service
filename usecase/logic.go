@@ -74,13 +74,15 @@ func (s service) GetDiscountsByID(ctx context.Context, id string) (res dto.GetDi
 
 func (s service) GetDiscounts(ctx context.Context) (res dto.GetDiscountsResponse, err error) {
 	logger := log.With(s.logger, "method", "GetDiscounts")
-	dis, err := s.repository.GetDiscounts(ctx)
+	dis, usedDiscountCodes, totalDiscountCodes, err := s.repository.GetDiscounts(ctx)
 	if err != nil {
 		logger.Log("err", err)
 		return res, err
 	}
 
 	return dto.GetDiscountsResponse{
+		Total:     totalDiscountCodes,
+		Used:      usedDiscountCodes,
 		Discounts: dis,
 	}, nil
 }

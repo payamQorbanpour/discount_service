@@ -52,6 +52,6 @@ func makeGetDiscounts(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		_ = request.(dto.GetDiscountsRequest)
 		res, err := s.GetDiscounts(ctx)
-		return dto.GetDiscountsResponse{Discounts: res.Discounts}, err
+		return dto.GetDiscountsResponse{Total: res.Total, Used: res.Used, Discounts: res.Discounts}, err
 	}
 }

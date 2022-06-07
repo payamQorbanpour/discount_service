@@ -23,7 +23,7 @@ func NewRepo(logger log.Logger) Repository {
 }
 
 func (repo *repo) InitiateDiscounts(ctx context.Context, count, amount int) error {
-	for i := 0; i <= count; i++ {
+	for i := 0; i < count; i++ {
 		code := strconv.Itoa(i)
 		discountData := dto.DiscountData{
 			Code:      code,
@@ -65,8 +65,16 @@ func (repo *repo) GetDiscountsByID(ctx context.Context, walletID string) ([]dto.
 	return walletDiscounts, nil
 }
 
-func (repo *repo) GetDiscounts(ctx context.Context) (map[string]dto.DiscountData, error) {
-	return repo.db, nil
+func (repo *repo) GetDiscounts(ctx context.Context) (map[string]dto.DiscountData, int, int, error) {
+	var usedDiscountCodes, totalDiscountCodes int
+	for k := range repo.db {
+		totalDiscountCodes++
+		if repo.db[k].WalletID != "" {
+			usedDiscountCodes++
+		}
+	}
+
+	return repo.db, usedDiscountCodes, totalDiscountCodes, nil
 }
 
 func (repo *repo) checkDiscountExistance(ctx context.Context, code string) bool {

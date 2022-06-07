@@ -19,6 +19,8 @@ type (
 	}
 
 	GetDiscountsResponse struct {
+		Total     int                     `json:"total"`
+		Used      int                     `json:"used"`
 		Discounts map[string]DiscountData `json:"discounts"`
 	}
 )
