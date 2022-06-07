@@ -10,8 +10,11 @@ import (
 
 func DecodeChargeRequest(ctx context.Context, r *http.Request) (interface{}, error) {
 	var req dto.DiscountRequest
-	err := json.NewDecoder(r.Body).Decode(&req)
-	if err != nil {
+
+	decoder := json.NewDecoder(r.Body)
+	decoder.DisallowUnknownFields()
+
+	if err := decoder.Decode(&req); err != nil {
 		return nil, err
 	}
 
