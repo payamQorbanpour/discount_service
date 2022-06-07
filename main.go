@@ -7,8 +7,12 @@ import (
 	"net/http"
 	"os"
 
-	"discount_service/usecase"
-	"discount_service/usecase/webapi"
+	"discount_service/internal/endpoint"
+	"discount_service/internal/pkg"
+	"discount_service/internal/repository"
+	"discount_service/internal/service"
+	"discount_service/internal/transport"
+	"discount_service/internal/webapi"
 
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/log/level"
@@ -34,20 +38,20 @@ func main() {
 	flag.Parse()
 	ctx := context.Background()
 
-	var srv usecase.Service
+	var srv service.Service
 	{
-		repository := usecase.NewRepo(logger)
+		repository := repository.NewRepo(logger)
 		webAPI := webapi.NewWebAPI(logger)
-		srv = usecase.NewService(repository, webAPI, logger)
+		srv = pkg.NewService(repository, webAPI, logger)
 	}
 
 	errs := make(chan error)
 
-	endpoints := usecase.MakeEndpoints(srv)
+	endpoints := endpoint.MakeEndpoints(srv)
 
 	go func() {
 		fmt.Println("listening on port", *httpAddr)
-		handler := usecase.NewHTTPServer(ctx, endpoints)
+		handler := transport.NewHTTPServer(ctx, endpoints)
 		errs <- http.ListenAndServe(*httpAddr, handler)
 	}()
 

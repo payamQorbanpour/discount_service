@@ -7,24 +7,30 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"time"
+
+	"discount_service/internal/dto"
 
 	"github.com/go-kit/kit/log"
-
-	"discount_service/usecase"
-	"discount_service/usecase/dto"
 )
 
 type web struct {
 	logger log.Logger
 }
 
-func NewWebAPI(logger log.Logger) usecase.WebAPI {
+type Wallet struct {
+	ID        string `json:"id,omitempty"`
+	Amount    int    `json:"amount"`
+	CreatedAt time.Time
+}
+
+func NewWebAPI(logger log.Logger) WebAPI {
 	return &web{
 		logger: logger,
 	}
 }
 
-func (web *web) WalletChargeRequest(ctx context.Context, wallet usecase.Wallet) (resp dto.ChargeWalletResponse, err error) {
+func (web *web) WalletChargeRequest(ctx context.Context, wallet Wallet) (resp dto.ChargeWalletResponse, err error) {
 	logger := log.With(web.logger, "method", "WalletChargeRequest")
 
 	url := "http://localhost:8085/charge"

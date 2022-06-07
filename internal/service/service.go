@@ -1,9 +1,9 @@
-package usecase
+package service
 
 import (
 	"context"
 
-	"discount_service/usecase/dto"
+	"discount_service/internal/dto"
 )
 
 type Service interface {

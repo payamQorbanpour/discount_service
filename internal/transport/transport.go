@@ -1,39 +1,42 @@
-package usecase
+package transport
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
+
+	"discount_service/internal/endpoint"
 
 	httptransport "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
 )
 
-func NewHTTPServer(ctx context.Context, endpoints Endpoints) http.Handler {
+func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoints) http.Handler {
 	r := mux.NewRouter()
 	r.Use(commonMiddleware)
 
 	r.Methods("POST").Path("/").Handler(httptransport.NewServer(
 		endpoints.ChargeWallet,
-		decodeChargeRequest,
-		encodeResponse,
+		DecodeChargeRequest,
+		EncodeResponse,
 	))
 
 	r.Methods("POST").Path("/initiate").Handler(httptransport.NewServer(
 		endpoints.InitiateDiscounts,
-		decodeInitiateDiscounts,
-		encodeResponse,
+		DecodeInitiateDiscounts,
+		EncodeResponse,
 	))
 
 	r.Methods("GET").Path("/{id}").Handler(httptransport.NewServer(
 		endpoints.GetDiscountsByID,
-		decodeGetDiscountsByIDRequest,
-		encodeResponse,
+		DecodeGetDiscountsByIDRequest,
+		EncodeResponse,
 	))
 
 	r.Methods("GET").Path("/").Handler(httptransport.NewServer(
 		endpoints.GetDiscounts,
-		decodeGetDiscountsRequest,
-		encodeResponse,
+		DecodeGetDiscountsRequest,
+		EncodeResponse,
 	))
 
 	return r
@@ -44,4 +47,8 @@ func commonMiddleware(next http.Handler) http.Handler {
 		w.Header().Add("Content-Type", "application/json")
 		next.ServeHTTP(w, r)
 	})
+}
+
+func EncodeResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
+	return json.NewEncoder(w).Encode(response)
 }
