@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"io/ioutil"
 	"net/http"
 	"time"
 
@@ -46,7 +45,7 @@ func (web *web) WalletChargeRequest(ctx context.Context, wallet Wallet) (resp dt
 		return resp, err
 	}
 
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		logger.Log("err", err)
 		return resp, err
