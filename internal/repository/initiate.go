@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func (repo *repo) InitiateDiscounts(ctx context.Context, count, amount int) error {
+func (repo *Repo) InitiateDiscounts(ctx context.Context, count, amount int) error {
 	for i := 0; i < count; i++ {
 		code := strconv.Itoa(i)
 		discountData := dto.DiscountData{
@@ -17,7 +17,7 @@ func (repo *repo) InitiateDiscounts(ctx context.Context, count, amount int) erro
 			UpdatedAt: time.Now().Format(time.RFC3339),
 		}
 
-		repo.db[code] = discountData
+		repo.DB[code] = discountData
 	}
 
 	return nil

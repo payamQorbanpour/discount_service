@@ -8,7 +8,7 @@ import (
 	"github.com/go-kit/kit/log"
 )
 
-func (s discountService) ChargeWallet(ctx context.Context, code, walletID string) (res dto.ChargeWalletResponse, err error) {
+func (s *DiscountService) ChargeWallet(ctx context.Context, code, walletID string) (res dto.ChargeWalletResponse, err error) {
 	logger := log.With(s.logger, "method", "ChargeWallet")
 
 	discountData, err := s.repository.UpdateDiscount(ctx, code, walletID)

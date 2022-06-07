@@ -6,7 +6,7 @@ import (
 	"github.com/go-kit/kit/log"
 )
 
-func (s discountService) InitiateDiscounts(ctx context.Context, count, amount int) error {
+func (s DiscountService) InitiateDiscounts(ctx context.Context, count, amount int) error {
 	logger := log.With(s.logger, "method", "InitiateDiscounts")
 
 	err := s.repository.InitiateDiscounts(ctx, count, amount)

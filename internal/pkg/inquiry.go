@@ -7,7 +7,7 @@ import (
 	"github.com/go-kit/kit/log"
 )
 
-func (s discountService) GetDiscountsByID(ctx context.Context, id string) (res dto.GetDiscountsByIDResponse, err error) {
+func (s DiscountService) GetDiscountsByID(ctx context.Context, id string) (res dto.GetDiscountsByIDResponse, err error) {
 	logger := log.With(s.logger, "method", "GetDiscountsByID")
 	dis, err := s.repository.GetDiscountsByID(ctx, id)
 	if err != nil {
@@ -20,7 +20,7 @@ func (s discountService) GetDiscountsByID(ctx context.Context, id string) (res d
 	}, nil
 }
 
-func (s discountService) GetDiscounts(ctx context.Context) (res dto.GetDiscountsResponse, err error) {
+func (s DiscountService) GetDiscounts(ctx context.Context) (res dto.GetDiscountsResponse, err error) {
 	logger := log.With(s.logger, "method", "GetDiscounts")
 	dis, usedDiscountCodes, totalDiscountCodes, err := s.repository.GetDiscounts(ctx)
 	if err != nil {

@@ -7,8 +7,8 @@ import (
 	"github.com/go-kit/kit/log"
 )
 
-type repo struct {
-	db     map[string]dto.DiscountData
+type Repo struct {
+	DB     map[string]dto.DiscountData
 	logger log.Logger
 }
 
@@ -20,20 +20,20 @@ type Repository interface {
 }
 
 func NewRepo(logger log.Logger) Repository {
-	return &repo{
-		db:     map[string]dto.DiscountData{},
+	return &Repo{
+		DB:     map[string]dto.DiscountData{},
 		logger: logger,
 	}
 }
 
-func (repo *repo) checkDiscountExistance(ctx context.Context, code string) bool {
-	if _, exists := repo.db[code]; exists {
+func (repo *Repo) checkDiscountExistance(ctx context.Context, code string) bool {
+	if _, exists := repo.DB[code]; exists {
 		return true
 	}
 
 	return false
 }
 
-func (repo *repo) discountValidation(ctx context.Context, code string) bool {
-	return repo.db[code].WalletID != ""
+func (repo *Repo) discountValidation(ctx context.Context, code string) bool {
+	return repo.DB[code].WalletID != ""
 }

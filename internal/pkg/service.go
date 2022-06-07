@@ -8,14 +8,14 @@ import (
 	"github.com/go-kit/kit/log"
 )
 
-type discountService struct {
+type DiscountService struct {
 	repository repository.Repository
 	webAPI     webapi.WebAPI
 	logger     log.Logger
 }
 
 func NewService(repo repository.Repository, webAPI webapi.WebAPI, logger log.Logger) service.Service {
-	return &discountService{
+	return &DiscountService{
 		repository: repo,
 		webAPI:     webAPI,
 		logger:     logger,
