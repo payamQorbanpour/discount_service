@@ -10,4 +10,4 @@ A service to manage discounts
 
 ## API Guidance
 
-To get an overview of the provided APIs check `/swagger`
+Document available here `/docs`
