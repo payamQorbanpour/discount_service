@@ -1,7 +1,7 @@
 package endpoint
 
 import (
-	"discount_service/internal/service"
+	"discount_service/internal/pkg"
 
 	"github.com/go-kit/kit/endpoint"
 )
@@ -13,7 +13,7 @@ type Endpoints struct {
 	GetDiscounts      endpoint.Endpoint
 }
 
-func MakeEndpoints(s service.Service) Endpoints {
+func MakeEndpoints(s pkg.Service) Endpoints {
 	return Endpoints{
 		InitiateDiscounts: makeInitiateDiscountsEndpoint(s),
 		ChargeWallet:      makeChargeWalletEndpoint(s),

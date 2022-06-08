@@ -1,6 +1,11 @@
 package dto
 
 type (
+	Error struct {
+		Message   string `json:"message"`
+		ErrorCode int    `json:"error_code"`
+	}
+
 	ChargeWalletResponse struct {
 		ID      string `json:"id"`
 		Balance int    `json:"balance"`

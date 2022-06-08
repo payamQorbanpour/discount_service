@@ -4,14 +4,14 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"io"
 	"net/http"
 	"time"
 
 	"discount_service/internal/dto"
+	"discount_service/internal/model"
 
-	"github.com/go-kit/kit/log"
+	"github.com/go-kit/log"
 )
 
 type web struct {
@@ -30,10 +30,10 @@ func NewWebAPI(logger log.Logger) WebAPI {
 	}
 }
 
-func (web *web) WalletChargeRequest(ctx context.Context, wallet Wallet) (resp dto.ChargeWalletResponse, err error) {
+func (web *web) WalletChargeRequest(ctx context.Context, wallet Wallet) (resp *dto.ChargeWalletResponse, err error) {
 	logger := log.With(web.logger, "method", "WalletChargeRequest")
 
-	url := "http://localhost:8085/charge"
+	url := "http://localhost:8080/charge"
 
 	payload, _ := json.Marshal(&dto.ChargeWalletRequest{
 		ID:     wallet.ID,
@@ -43,18 +43,18 @@ func (web *web) WalletChargeRequest(ctx context.Context, wallet Wallet) (resp dt
 	res, err := http.Post(url, "Content-Type:application/json", bytes.NewBuffer(payload))
 	if err != nil {
 		logger.Log("err", err)
-		return resp, err
+		return nil, err
 	}
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		logger.Log("err", err)
-		return resp, err
+		return nil, err
 	}
 
 	if err := json.Unmarshal(body, &resp); err != nil {
 		logger.Log("err", body)
-		return resp, errors.New(string(body))
+		return nil, model.ErrServiceUnavailable
 	}
 
 	return resp, nil

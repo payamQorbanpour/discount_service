@@ -2,9 +2,10 @@ package pkg
 
 import (
 	"context"
+
 	"discount_service/internal/dto"
 
-	"github.com/go-kit/kit/log"
+	"github.com/go-kit/log"
 )
 
 func (s DiscountService) GetDiscountsByID(ctx context.Context, id string) (res dto.GetDiscountsByIDResponse, err error) {

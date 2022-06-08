@@ -2,9 +2,10 @@ package repository
 
 import (
 	"context"
-	"discount_service/internal/dto"
 	"strconv"
 	"time"
+
+	"discount_service/internal/dto"
 )
 
 func (repo *Repo) InitiateDiscounts(ctx context.Context, count, amount int) error {

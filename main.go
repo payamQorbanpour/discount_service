@@ -10,11 +10,10 @@ import (
 	"discount_service/internal/endpoint"
 	"discount_service/internal/pkg"
 	"discount_service/internal/repository"
-	"discount_service/internal/service"
 	"discount_service/internal/transport"
 	"discount_service/internal/webapi"
 
-	"github.com/go-kit/kit/log"
+	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 )
 
@@ -38,7 +37,7 @@ func main() {
 	flag.Parse()
 	ctx := context.Background()
 
-	var srv service.Service
+	var srv pkg.Service
 	{
 		repository := repository.NewRepo(logger)
 		webAPI := webapi.NewWebAPI(logger)

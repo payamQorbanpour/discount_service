@@ -2,18 +2,19 @@ package repository
 
 import (
 	"context"
-	"discount_service/internal/dto"
-	"errors"
 	"time"
+
+	"discount_service/internal/dto"
+	"discount_service/internal/model"
 )
 
 func (repo *Repo) UpdateDiscount(ctx context.Context, code, walletID string) (*dto.DiscountData, error) {
 	if !repo.checkDiscountExistance(ctx, code) {
-		return nil, errors.New("discount code not found")
+		return nil, model.ErrDiscountNotFound
 	}
 
 	if repo.discountValidation(ctx, code) {
-		return nil, errors.New("discount used")
+		return nil, model.ErrDiscountUsed
 	}
 
 	discountData := repo.DB[code]
