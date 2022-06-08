@@ -1,0 +1,153 @@
+definitions:
+  dto.ChargeWalletResponse:
+    properties:
+      balance:
+        type: integer
+      id:
+        type: string
+    type: object
+  dto.DiscountData:
+    properties:
+      amount:
+        type: integer
+      code:
+        type: string
+      createdAt:
+        type: string
+      updatedAt:
+        type: string
+      wallet_id:
+        type: string
+    type: object
+  dto.DiscountRequest:
+    properties:
+      code:
+        type: string
+      wallet_id:
+        type: string
+    type: object
+  dto.DiscountsInitiateRequest:
+    properties:
+      amount:
+        type: integer
+      count:
+        type: integer
+    type: object
+  dto.Error:
+    properties:
+      error_code:
+        type: integer
+      message:
+        type: string
+    type: object
+  dto.GetDiscountsByIDRequest:
+    properties:
+      id:
+        type: string
+    type: object
+  dto.GetDiscountsByIDResponse:
+    properties:
+      discounts:
+        items:
+          $ref: '#/definitions/dto.DiscountData'
+        type: array
+    type: object
+  dto.GetDiscountsRequest:
+    type: object
+  dto.GetDiscountsResponse:
+    properties:
+      discounts:
+        additionalProperties:
+          $ref: '#/definitions/dto.DiscountData'
+        type: object
+      total:
+        type: integer
+      used:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /:
+    post:
+      consumes:
+      - application/json
+      description: Send charge wallet request with given amount and store using discount
+        code
+      operationId: charge
+      parameters:
+      - description: Charge request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DiscountRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ChargeWalletResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+      summary: Charge wallet
+      tags:
+      - Charge
+  /{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get all discounts
+      operationId: getdiscounts
+      parameters:
+      - description: Get discount request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GetDiscountsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetDiscountsResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+      summary: Get discounts
+      tags:
+      - GetDiscounts
+  /initiate:
+    post:
+      consumes:
+      - application/json
+      description: Initiate discounts with give amount
+      operationId: initiate
+      parameters:
+      - description: Initiate discounts request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DiscountsInitiateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetDiscountsResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+      summary: Initiate discounts
+      tags:
+      - Initiate
+swagger: "2.0"

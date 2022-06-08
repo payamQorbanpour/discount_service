@@ -4,10 +4,6 @@ A service to manage discounts
 
 ## Usage
 
-### Prerequisites
-
-`make build` 
-
 ### Run
 
 `make run`
