@@ -25,6 +25,7 @@ func (s *DiscountService) ChargeWallet(ctx context.Context, code, walletID strin
 
 	res, err = s.webAPI.WalletChargeRequest(ctx, wallet)
 	if err != nil {
+		s.repository.UpdateDiscountRollback(ctx, code, walletID)
 		logger.Log("err", err)
 		return nil, err
 	}
