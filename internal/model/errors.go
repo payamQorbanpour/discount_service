@@ -11,6 +11,7 @@ const (
 	CodeErrDiscountNotFound   = 1
 	CodeErrDiscountUsed       = 2
 	CodeErrServiceUnavailable = 3
+	CodeErrNotValidAmount     = 4
 )
 
 var (
@@ -18,6 +19,7 @@ var (
 	ErrDiscountNotFound   = errors.New("discount code not found")
 	ErrDiscountUsed       = errors.New("discount used")
 	ErrServiceUnavailable = errors.New("service unavailable")
+	ErrNotValidAmount     = errors.New("not valid amount")
 )
 
 func ErrToCode(err error) int {
@@ -26,6 +28,10 @@ func ErrToCode(err error) int {
 		return CodeErrDiscountNotFound
 	case ErrDiscountUsed:
 		return CodeErrDiscountUsed
+	case ErrServiceUnavailable:
+		return CodeErrServiceUnavailable
+	case ErrNotValidAmount:
+		return CodeErrNotValidAmount
 	default:
 		return CodeErrUnexpected
 	}
@@ -33,7 +39,7 @@ func ErrToCode(err error) int {
 
 func ErrToHTTPStatus(err error) int {
 	switch errors.Cause(err) {
-	case ErrDiscountNotFound, ErrDiscountUsed:
+	case ErrDiscountNotFound, ErrDiscountUsed, ErrNotValidAmount:
 		return http.StatusNotFound
 	case ErrServiceUnavailable:
 		return http.StatusInternalServerError
