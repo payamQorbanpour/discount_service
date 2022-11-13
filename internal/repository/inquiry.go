@@ -7,6 +7,9 @@ import (
 )
 
 func (repo *Repo) GetDiscountsByID(ctx context.Context, walletID string) ([]dto.DiscountData, error) {
+	repo.mu.Lock()
+	defer repo.mu.Unlock()
+
 	walletDiscounts := []dto.DiscountData{}
 	for k := range repo.DB {
 		if walletID == repo.DB[k].WalletID {
@@ -18,6 +21,9 @@ func (repo *Repo) GetDiscountsByID(ctx context.Context, walletID string) ([]dto.
 }
 
 func (repo *Repo) GetDiscounts(ctx context.Context) (map[string]dto.DiscountData, int, int, error) {
+	repo.mu.Lock()
+	defer repo.mu.Unlock()
+
 	var usedDiscountCodes, totalDiscountCodes int
 	for k := range repo.DB {
 		totalDiscountCodes++

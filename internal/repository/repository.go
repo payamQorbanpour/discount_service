@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"sync"
 
 	"discount_service/internal/dto"
 
@@ -11,6 +12,7 @@ import (
 type Repo struct {
 	DB     map[string]dto.DiscountData
 	logger log.Logger
+	mu     sync.Mutex
 }
 
 type Repository interface {
@@ -25,6 +27,7 @@ func NewRepo(logger log.Logger) Repository {
 	return &Repo{
 		DB:     map[string]dto.DiscountData{},
 		logger: logger,
+		mu:     sync.Mutex{},
 	}
 }
 

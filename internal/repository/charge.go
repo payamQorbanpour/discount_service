@@ -9,6 +9,9 @@ import (
 )
 
 func (repo *Repo) UpdateDiscount(ctx context.Context, code, walletID string) (*dto.DiscountData, error) {
+	repo.mu.Lock()
+	defer repo.mu.Unlock()
+
 	if !repo.checkDiscountExistance(ctx, code) {
 		return nil, model.ErrDiscountNotFound
 	}
@@ -25,6 +28,9 @@ func (repo *Repo) UpdateDiscount(ctx context.Context, code, walletID string) (*d
 }
 
 func (repo *Repo) UpdateDiscountRollback(ctx context.Context, code, walletID string) (*dto.DiscountData, error) {
+	repo.mu.Lock()
+	defer repo.mu.Unlock()
+
 	if !repo.checkDiscountExistance(ctx, code) {
 		return nil, model.ErrDiscountNotFound
 	}
